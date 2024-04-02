@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>classRoom.jsonからデータを取得する</title>
+    <style type="text/css">
+        li {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="classRoom">
+        <p id="roomNo">クラス番号: </p>
+        <ul id="member"></ul>
+    </div>
+    <script type="text/javascript">
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "./classRoom.json");
+        xhr.responseType = "json";
+        xhr.onload = function() {
+            let roomNo = document.getElementById("roomNo");
+            roomNo.textContent += xhr.response.roomNo;
+            console.log("クラス番号: " + xhr.response.roomNo);
+            let member = document.getElementById("member");
+            xhr.response.members.forEach(function(person) {
+                let p = document.createElement("p");
+                p.textContent = person.id + ": " + person.name;
+                member.appendChild(p);
+                console.log(person.id + ": " + person.name);
+            });
+        }
+        xhr.send();
+        /*Q3模範解答：変数定義せずに出力処理を行うパターン
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "./classRoom.json");
+        xhr.responseType = "json";
+        xhr.onload = function() {
+            console.log("クラス番号: " + xhr.response.roomNo);
+            xhr.response.members.forEach(function(member) {
+                console.log(member.id + ": " + member.name);
+            });
+        };
+        xhr.send();
+        */
+        /*Q4模範解答：要素の取得と追加処理を一度に行っている。
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "./classRoom.json");
+        xhr.responseType = "json";
+        xhr.onload = function() {
+            document.getElementById("roomNo").append(xhr.response.roomNo);
+            xhr.response.members.forEach(function(member) {
+                let p = document.createElement("p");
+                p.append(member.id + ": " + member.name);
+                document.getElementById("member").appendChild(p);
+            });
+        };
+
+xhr.send();
+       */
+    </script>
+</body>
+</html>
